@@ -1,0 +1,58 @@
+{
+  "users": [
+    {
+      "firstName": "Zhang",
+      "lastName": "San",
+      "email": "zhangsan@example.com",
+      "dateOfBirth": "2004-03-15",
+      "address": {
+        "street": "No. 100 Wuyi Road",
+        "city": "Shijiazhuang",
+        "state": "Hebei",
+        "zipCode": "050000"
+      },
+      "preferences": {
+        "theme": "dark",
+        "language": "zh-CN",
+        "notifications": true,
+        "subscription": true
+      }
+    },
+    {
+      "firstName": "Li",
+      "lastName": "Si",
+      "email": "lisi@example.com",
+      "dateOfBirth": "2003-11-22",
+      "address": {
+        "street": "No. 58 Chaoyang Avenue",
+        "city": "Beijing",
+        "state": "Beijing",
+        "zipCode": "100020"
+      },
+      "preferences": {
+        "theme": "light",
+        "language": "en-US",
+        "notifications": false,
+        "subscription": false
+      }
+    },
+    {
+      "firstName": "Wang",
+      "lastName": "Wu",
+      "email": "wangwu@example.com",
+      "dateOfBirth": "2005-07-08",
+      "address": {
+        "street": "No. 200 Renmin Road",
+        "city": "Tianjin",
+        "state": "Tianjin",
+        "zipCode": "300000"
+      },
+      "preferences": {
+        "theme": "system",
+        "language": "zh-CN",
+        "notifications": true,
+        "subscription": true
+      }
+    }
+  ]
+}

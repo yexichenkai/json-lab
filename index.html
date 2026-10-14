@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profiles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 40px 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        .user-card {
+            max-width: 600px;
+            margin: 0 auto 24px;
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .user-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        .user-email {
+            color: #7f8c8d;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #34495e;
+            margin: 16px 0 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-label {
+            color: #7f8c8d;
+        }
+        .info-value {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-true {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .badge-false {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Profiles</h1>
+    <div id="user-container"></div>
+
+    <script>
+        // 内嵌数据（本地file://协议下fetch失败时兜底用，部署到GitHub后会自动优先走fetch）
+        const fallbackData = {
+            "users": [
+                {
+                    "firstName": "Zhang",
+                    "lastName": "San",
+                    "email": "zhangsan@example.com",
+                    "dateOfBirth": "2004-03-15",
+                    "address": {
+                        "street": "No. 100 Wuyi Road",
+                        "city": "Shijiazhuang",
+                        "state": "Hebei",
+                        "zipCode": "050000"
+                    },
+                    "preferences": {
+                        "theme": "dark",
+                        "language": "zh-CN",
+                        "notifications": true,
+                        "subscription": true
+                    }
+                },
+                {
+                    "firstName": "Li",
+                    "lastName": "Si",
+                    "email": "lisi@example.com",
+                    "dateOfBirth": "2003-11-22",
+                    "address": {
+                        "street": "No. 58 Chaoyang Avenue",
+                        "city": "Beijing",
+                        "state": "Beijing",
+                        "zipCode": "100020"
+                    },
+                    "preferences": {
+                        "theme": "light",
+                        "language": "en-US",
+                        "notifications": false,
+                        "subscription": false
+                    }
+                },
+                {
+                    "firstName": "Wang",
+                    "lastName": "Wu",
+                    "email": "wangwu@example.com",
+                    "dateOfBirth": "2005-07-08",
+                    "address": {
+                        "street": "No. 200 Renmin Road",
+                        "city": "Tianjin",
+                        "state": "Tianjin",
+                        "zipCode": "300000"
+                    },
+                    "preferences": {
+                        "theme": "system",
+                        "language": "zh-CN",
+                        "notifications": true,
+                        "subscription": true
+                    }
+                }
+            ]
+        };
+
+        function renderUsers(json) {
+            const container = document.getElementById('user-container');
+            json.users.forEach(user => {
+                const card = document.createElement('div');
+                card.className = 'user-card';
+                
+                const notifBadge = user.preferences.notifications ? 
+                    '<span class="badge badge-true">Enabled</span>' : 
+                    '<span class="badge badge-false">Disabled</span>';
+                
+                const subBadge = user.preferences.subscription ? 
+                    '<span class="badge badge-true">Subscribed</span>' : 
+                    '<span class="badge badge-false">Not Subscribed</span>';
+
+                card.innerHTML = `
+                    <div class="user-name">${user.firstName} ${user.lastName}</div>
+                    <div class="user-email">${user.email}</div>
+                    
+                    <div class="section-title">Basic Info</div>
+                    <div class="info-row">
+                        <span class="info-label">Date of Birth</span>
+                        <span class="info-value">${user.dateOfBirth}</span>
+                    </div>
+                    
+                    <div class="section-title">Address</div>
+                    <div class="info-row">
+                        <span class="info-label">Street</span>
+                        <span class="info-value">${user.address.street}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">City</span>
+                        <span class="info-value">${user.address.city}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">State</span>
+                        <span class="info-value">${user.address.state}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Zip Code</span>
+                        <span class="info-value">${user.address.zipCode}</span>
+                    </div>
+                    
+                    <div class="section-title">Preferences</div>
+                    <div class="info-row">
+                        <span class="info-label">Theme</span>
+                        <span class="info-value">${user.preferences.theme}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Language</span>
+                        <span class="info-value">${user.preferences.language}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Notifications</span>
+                        <span class="info-value">${notifBadge}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Newsletter Subscription</span>
+                        <span class="info-value">${subBadge}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 优先用fetch读取json文件（部署到GitHub上就是走这个，符合题目要求）
+        fetch('userProfiles.json')
+            .then(response => {
+                if (!response.ok) throw new Error('Fetch error: ' + response.status);
+                return response.json();
+            })
+            .then(json => renderUsers(json))
+            .catch(err => {
+                // 本地直接双击打开时fetch会失败，用内嵌数据兜底显示
+                console.warn('Fetch failed, using fallback data:', err.message);
+                renderUsers(fallbackData);
+            });
+    </script>
+</body>
+</html>
